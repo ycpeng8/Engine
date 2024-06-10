@@ -1,0 +1,90 @@
+#+TITLE: Game Engine Architecture 3rd Edition Notes
+#+DESCRIPTION: This is my notes of GEA book.
+#+AUTHOR: ycpeng
+
+* Table of Contents :toc:
+- [[#chapter1-introduction][Chapter1 Introduction]]
+  - [[#structure-of-game-team][Structure of Game Team]]
+  - [[#nature][Nature]]
+  - [[#runtime-engine-architecture][Runtime Engine Architecture]]
+
+* Chapter1 Introduction
+
+** Structure of Game Team
+
++ Engineers
+  - runtime programmer :: engine and game itself
+  - tools programmer :: offline tools that allow the rest of the development team to work effectively
+  - engineers -> senior engineers -> lead engineers -> technical directors -> chief technical officer(CTO)
++ Artists
+  - concept artists
+  - 3D modelers
+  - texture artists
+  - lighting artists
+  - animators
+  - motion capture actors
+  - sound designers
+  - voice actors
+  - composers
++ Game Designers
++ Producers
++ Other Stuff
++ Publishers and Studios
+
+** Nature
+
+soft real-time interactive agent-based computer simulations (for two- and three-dimensional video games)
+
+** Runtime Engine Architecture
+
+Figure 1.16 shows all of the major runtime components that make up a typical 3D game engine.
+
+#+ATTR_ORG: :width 800
+[[./assets/f_01_16.png]]
+
+*** Drivers
+
+*** Operation System (OS)
+
+*** Third-Party SDKs and Middleware
+
+1. *Data Structures and Algorithms* eg. /Boost/, /Folly/, /Loki/.
+2. *Graphics* eg. /Glide/, /OpenGL/, /DirectX/, /libgcm/, /Edge/, /Vulkan/.
+3. *Collision and Physics* eg. /Havok/, /PhysX/, /Open Dynamics Engine (ODE)/.
+4. *Character Animation* eg. /Granny/, /Havok Animation/, /OrbrisAnim/.
+5. *Biomechanical Character Models* eg. /Endorphin and Euphoria/
+*...*
+
+*** Platform Independence Layer
+
+This layer wraps hardware, drivers, OS, and other 3rd party software. Provided with API and insulated from low-level library changes, game engineers can develop their game on specific target platform, such as PlayStation and Xbox.
+
+*** Core Systems
+
+The collection of useful software utilities.
+
+Here're a few examples:
+1. *Assertions*
+2. *Memory management*
+3. *Math library*
+4. *Custom data structures and algorithms*
+*...*
+
+*** Resource Manager
+
+*** Rendering Engine
+
+Here's a common layer approach to rendering design:
+**** Low-Level Renderer
+
+This level renders geometric primitives as quickly and richly as possible.
+
+Here're its several subcomponents:
++ *Graphics Device Interface* enumerates the available graphics devices, initializes them, sets up render surface (back-buffer, stencil buffer, etc.) and so on, for graphics SDK.
++ *Other Renderer Components* such as geometric primitives (sometimes called render packets), material system, and dynamic lighting system.
+
+**** Scene Graph/Culling Optimizations
+
+The low-level renderer draws all of the geometry it received. We need culling optimizations to decide which face of texture of objects we should render.
+
+The reason why we have this design is that this permit different game teams to reuse the primitive submission code but to craft a PVS (Potentially Visible Set) determination systemthat is specificto the needs of each team's game.
